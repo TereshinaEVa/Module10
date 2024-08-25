@@ -17,9 +17,9 @@ end_time = datetime.now()
 print(end_time - start_time)"""
 
 if __name__ == '__main__':
+    start_time = datetime.now()
     with multiprocessing.Pool(processes=2) as pool:
         filenames = [f'./Files/file {number}.txt' for number in range(1, 5)]
-        start_time = datetime.now()
         pool.map(read_info, filenames)
     end_time = datetime.now()
 
