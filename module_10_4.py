@@ -1,5 +1,5 @@
 import queue
-from threading import  Thread
+from threading import Thread
 from time import sleep
 from random import randint
 
@@ -15,28 +15,39 @@ class Guest(Thread):
         self.name = name
 
     def run(self):
-        wait_1 = randint(3, 10)
-        sleep(wait_1)
+        sleep(randint(3, 10))
 
 
 class Cafe:
     def __init__(self, *tables):
         self.queue = queue.Queue()
-        self.tables = list(tables)
+        self.tables = tables
 
     def guest_arrival(self, *guests):
-        n = 1
-        guest_1 = list(guests)
-        for i in range(len(self.tables)):
-            Table(n).guest =guest_1[i]
-            print(f'{guest_1[i]} сел(-а) за стол номер {n}')
-            n += 1
-        else:
-            self.queue.put(i)
-            print(f'{guest_1[i]} в очереди')
+         for guest in guests:
+            for table_seat in self.tables:
+                if table_seat.guest is None:
+                    guest.start()
+                    table_seat.guest = guest
+                    print(f'{guest.name} сел(-а) за стол номер {table_seat.number}')
+                    break
+            else:
+                self.queue.put(guest)
+                print(f'{guest.name} в очереди')
 
     def discuss_guests(self):
-        ...
+        while self.queue or any[self.tables]:
+            for table_seat in self.tables:
+                if table_seat.guest != None and not(threading.is_alive()):
+                    print(f'{table_seat.name} покушал(-а) и ушёл(ушла)')
+                    print(f'Стол номер {table_seat.number} свободен')
+                    table_seat.guest = None
+                    if self.queue:
+                        table_seat.name = self.queue.get()
+                        table_seat.name.start()
+                        print(f'{table_seat.name} сел(-а) за стол номер {table_seat.number}')
+                        break
+
 
 
 # Создание столов
@@ -52,3 +63,5 @@ guests = [Guest(name) for name in guests_names]
 cafe = Cafe(*tables)
 # Приём гостей
 cafe.guest_arrival(*guests)
+# Обслуживание гостей
+cafe.discuss_guests()
