@@ -36,16 +36,16 @@ class Cafe:
                 print(f'{guest.name} в очереди')
 
     def discuss_guests(self):
-        while self.queue or any[self.tables]:
+        while self.queue or any[Table.guest]:
             for table_seat in self.tables:
-                if table_seat.guest != None and not(threading.is_alive()):
-                    print(f'{table_seat.name} покушал(-а) и ушёл(ушла)')
+                if table_seat.guest != None and not(table.guest.is_alive()):
+                    print(f'{table_seat.guest} покушал(-а) и ушёл(ушла)')
                     print(f'Стол номер {table_seat.number} свободен')
                     table_seat.guest = None
                     if self.queue:
-                        table_seat.name = self.queue.get()
-                        table_seat.name.start()
-                        print(f'{table_seat.name} сел(-а) за стол номер {table_seat.number}')
+                        table_seat.guest = self.queue.get()
+                        table_seat.guest.start()
+                        print(f'{table_seat.guest} сел(-а) за стол номер {table_seat.number}')
                         break
 
 
